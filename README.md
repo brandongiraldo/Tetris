@@ -10,7 +10,7 @@ An implementation of Puyo Puyo Tetris for the web.
 2. `virtualenv env`
 3. `source env/bin/activate`
 	* `deactivate` to stop
-4. `pip install Flask`
+4. `pip install -r requirements.txt`
 5. `python run.py`
 6. Open http://127.0.0.1:5000/
 
