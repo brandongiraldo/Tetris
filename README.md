@@ -12,4 +12,6 @@ An implementation of Puyo Puyo Tetris for the web.
 	* `deactivate` to stop
 4. `pip install Flask`
 5. `python run.py`
-6. Open (http://127.0.0.1:5000/)
+6. Open http://127.0.0.1:5000/
+
+Need to set up debug mode for local development.
