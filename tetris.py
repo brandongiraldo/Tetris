@@ -6,9 +6,9 @@ class tetromino():
 
 	def __init__(self, color, structure):
 		self.structure = structure # np array
+		self.color = color
 		x = np.random.randint(10 - shape(self.structure)[1])
-		self.loc = np.array([0, x]) # top left corner in playfield
-		self.color = color 		
+		self.loc = np.array([0, x]) # top left corner in playfield	
 
 	def move_right(self):
 		self.loc[1] += 1
@@ -65,10 +65,14 @@ class tetrion():
 			self.curr_mino.move_right()
 
 	def rotccw(self):
-		pass
+		self.curr_mino.rotccw()
+		if self.mino_collides():
+			self.curr_mino.rotcw()
 
-	def rotccw(self):
-		pass
+	def rotcw(self):
+		self.curr_mino.rotcw()
+		if self.mino_collides():
+			self.curr_mino.rotccw()
 
 	def mino_collides(self):
 		x0 = self.curr_mino.get_bboxW
@@ -86,7 +90,9 @@ class tetrion():
 		self.curr_mino_field[y0:y1,x0:x1] = self.curr_mino.structure
 
 	def create_new_mino(self):
-		self.curr_mino = unique_minos[numpy.random.randint(length(unique_minos))]
+		idx = numpy.random.randint(length(unique_minos))
+		self.curr_mino = unique_minos[idx]
+		unique_minos[idx] = tetromino(self.curr_mino.color, self.curr_mino.structure)
 
 	def add_row_to_bot(self):
 		pass
