@@ -2,6 +2,8 @@ from threading import Lock
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import sys
+import game
+import numpy
 
 async_mode = None
 
@@ -11,8 +13,15 @@ socketio = SocketIO(app)
 thread = None
 thread_lock = Lock()
 
+# create game
+pptetris = None
+
 @app.route('/')
 def index():
+	# initialize game
+	pptetris = game.game()
+	# store client ID hash
+	return pptetris.p1.trion.playfield.tolist()
 	return render_template('index.html', async_mode=socketio.async_mode)
 
 def background_thread():
@@ -37,7 +46,22 @@ def connection_callback(message):
 
 @socketio.on('keypress', namespace='/tetris')
 def keypress(data):
-	print data['key']
+	if data['key'] is "ArrowRight":
+		pptetris.p1.trion.move_right()
+		return pptetris.p1.trion.playfield.tolist()
+	elif data['key'] is "ArrowLeft":
+		pptetris.p1.trion.move_left()
+		return pptetris.p1.trion.playfield.tolist()
+	elif data['key'] is "ArrowUp":
+		pptetris.p1.trion.rot()
+		return pptetris.p1.trion.playfield.tolist()
+
+@app.route('/iterate') # Needs to emit to all clients on a thread per second
+def iterate():
+	pptetris.iterate()
+	if pptetris.p1.trion.game_over:
+		return 0
+	return pptetris.p1.trion.playfield.tolist()
 
 if __name__ == '__main__':
 	if 'debug' in sys.argv:
@@ -45,3 +69,4 @@ if __name__ == '__main__':
 		socketio.run(app, debug=True)
 	else:
 		socketio.run(app)
+
