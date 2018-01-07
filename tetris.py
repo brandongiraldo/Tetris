@@ -52,7 +52,8 @@ class tetrion():
 		self.height = 20 # standard size, use global var?
 		self.width = 10 # this is also used in tetromino class
 		self.unique_minos = self.define_tetrominoes()
-		self.curr_mino = self.create_new_mino()
+		self.curr_mino = None
+		self.create_new_mino()
 		self.save_mino = None
 		self.playfield = np.zeros((self.height, self.width))
 		self.game_over = False
@@ -93,19 +94,19 @@ class tetrion():
 			self.curr_mino.rotccw()
 
 	def mino_collides(self):
-		x0 = self.curr_mino.get_bboxW
-		x1 = self.curr_mino.get_bboxE
-		y0 = self.curr_mino.get_bboxN
-		y1 = self.curr_mino.get_bboxS
+		x0 = self.curr_mino.get_bboxW()
+		x1 = self.curr_mino.get_bboxE()+1
+		y0 = self.curr_mino.get_bboxN()
+		y1 = self.curr_mino.get_bboxS()+1
 		position_to_test = self.playfield[y0:y1,x0:x1] > 1
 		curr_position = self.curr_mino.structure > 1
 		return (position_to_test & curr_position).any()
 
 	def add_mino_to_field(self):
-		x0 = self.curr_mino.get_bboxW
-		x1 = self.curr_mino.get_bboxE
-		y0 = self.curr_mino.get_bboxN
-		y1 = self.curr_mino.get_bboxS
+		x0 = self.curr_mino.get_bboxW()
+		x1 = self.curr_mino.get_bboxE()+1
+		y0 = self.curr_mino.get_bboxN()
+		y1 = self.curr_mino.get_bboxS()+1
 		self.playfield[y0:y1,x0:x1] = self.curr_mino.structure
 		self.create_new_mino()
 
@@ -160,10 +161,10 @@ class tetrion():
 
 	def get_game_board(self):
 		display_board = np.zeros(np.shape(self.playfield))
-		x0 = self.curr_mino.get_bboxW
-		x1 = self.curr_mino.get_bboxE
-		y0 = self.curr_mino.get_bboxN
-		y1 = self.curr_mino.get_bboxS
+		x0 = self.curr_mino.get_bboxW()
+		x1 = self.curr_mino.get_bboxE()+1
+		y0 = self.curr_mino.get_bboxN()
+		y1 = self.curr_mino.get_bboxS()+1
 		display_board[y0:y1,x0:x1] = self.curr_mino.structure
 		return display_board
 

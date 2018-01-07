@@ -20,8 +20,9 @@
                 $('#connected').append('<br>' + $('<div/>').text(msg.data).html());
             });
 
-            socket.on('update_game_board', function(data) {
-            	console.log(data);
+            socket.on('update_board', function(data) {
+            	console.log(data.board);
+            	$('#board').text(data.board);
             });
 
             socket.on("keypress", function(key) {
@@ -48,5 +49,6 @@
     <h1>Tetris</h1>
     <p id="connected"></p>
     <p>Async mode is: <b>{{ async_mode }}</b></p>
+    <p id="board">Board: {{ board }}</p>
 </body>
 </html>

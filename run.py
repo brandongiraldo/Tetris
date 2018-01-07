@@ -19,10 +19,11 @@ pptetris = None
 @app.route('/')
 def index():
 	# initialize game
+	global pptetris
 	pptetris = game.game()
 	# store client ID hash
-	return pptetris.p1.trion.playfield.tolist()
-	return render_template('index.html', async_mode=socketio.async_mode)
+	print type(pptetris)
+	return render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist(), async_mode=socketio.async_mode)
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -48,20 +49,24 @@ def connection_callback(message):
 def keypress(data):
 	if data['key'] is "ArrowRight":
 		pptetris.p1.trion.move_right()
-		return pptetris.p1.trion.playfield.tolist()
 	elif data['key'] is "ArrowLeft":
 		pptetris.p1.trion.move_left()
-		return pptetris.p1.trion.playfield.tolist()
 	elif data['key'] is "ArrowUp":
 		pptetris.p1.trion.rot()
-		return pptetris.p1.trion.playfield.tolist()
+	
+	print "\n"
+	for row in pptetris.p1.trion.get_game_board().tolist():
+		print row
+	print "\n"
+
+	emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
 
 @app.route('/iterate') # Needs to emit to all clients on a thread per second
 def iterate():
 	pptetris.iterate()
 	if pptetris.p1.trion.game_over:
 		return 0
-	return pptetris.p1.trion.playfield.tolist()
+	return pptetris.p1.trion.get_game_board().tolist()
 
 if __name__ == '__main__':
 	if 'debug' in sys.argv:
