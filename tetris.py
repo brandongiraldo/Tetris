@@ -158,7 +158,13 @@ class tetrion():
 			minos.append( tetromino(i, structures[i]) )
 		return minos
 
-
-
+	def get_game_board(self):
+		display_board = np.zeros(np.shape(self.playfield))
+		x0 = self.curr_mino.get_bboxW
+		x1 = self.curr_mino.get_bboxE
+		y0 = self.curr_mino.get_bboxN
+		y1 = self.curr_mino.get_bboxS
+		display_board[y0:y1,x0:x1] = self.curr_mino.structure
+		return display_board
 
 
