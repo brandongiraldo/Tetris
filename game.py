@@ -7,10 +7,12 @@ class player():
 		self.score = 0
 		self.trion = tetrion()
 
-	def update(opponent_event):
+	def update(self, opponent_event):
 		# update player specific game state based on
 		# opponents event and previous game state
 		pass
+
+	def get_button_presses(self):
 
 
 class game():
@@ -19,28 +21,6 @@ class game():
 		self.update_time = 140 # ms
 		self.p1 = player()
 		self.p2 = player()
-		self.unique_minos = self.define_tetrominoes()
-
-	def define_tetrominoes(self):
-		# populate self.minos
-		structures = []
-		structures.append(np.array([	[1, 1, 1, 1]	]))
-		structures.append(np.array([	[1, 0, 0]		,\
-										[1, 1, 1]		]))
-		structures.append(np.array([	[0, 0, 1]		,\
-										[1, 1, 1]		]))
-		structures.append(np.array([	[1, 1]			,\
-										[1, 1]			]))
-		structures.append(np.array([	[0, 1, 1]		,\
-										[1, 1, 0]		]))
-		structures.append(np.array([	[0, 1, 0]		,\
-										[1, 1, 1]		]))
-		structures.append(np.array([	[1, 1, 0]		,\
-										[0, 1, 1]		]))
-		minos = []
-		for i in range(len(structures)):
-			minos.append( tetromino(i, structures[i]) )
-		return minos
 
 	def update(self):
 		# slow clock: update player 1 and player 2 game states
