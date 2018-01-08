@@ -39,8 +39,7 @@ def thread_update_board():
         pptetris.p1.trion.iterate()
         # render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
 
-        for row in pptetris.p1.trion.get_game_board():
-        	print row
+        print pptetris.p1.trion.get_game_board()
 
         if pptetris.p1.trion.game_over:
         	return 0
