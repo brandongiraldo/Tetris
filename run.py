@@ -10,17 +10,20 @@ async_mode = None
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'key'
 socketio = SocketIO(app)
-thread = None
+
+update_board_thread = None
 thread_lock = Lock()
 
 # create game
-pptetris = None
+pptetris = game.game()
 
 @app.route('/')
 def index():
 	# initialize game
-	global pptetris
-	pptetris = game.game()
+	
+	# global pptetris
+	# pptetris = game.game()
+
 	# store client ID hash
 
 	print "\n"
@@ -30,20 +33,27 @@ def index():
 
 	return render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist(), async_mode=socketio.async_mode)
 
-def background_thread():
-    """Example of how to send server generated events to clients."""
-    count = 0
+def thread_update_board():
     while True:
-        socketio.sleep(10)
-        count += 1
+        socketio.sleep(0.5)
+        pptetris.p1.trion.iterate()
+        # render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
 
+        for row in pptetris.p1.trion.get_game_board():
+        	print row
+
+        if pptetris.p1.trion.game_over:
+        	return 0
+		emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
+
+        
 @socketio.on('connect', namespace='/tetris')
 def connect():
-	global thread
+	global update_board_thread
 	with thread_lock:
-		if thread is None:
-			thread = socketio.start_background_task(target=background_thread)
+		if update_board_thread is None:
 			emit('connection_successful', {'data': 'Now connected to tetris backend.'})
+			update_board_thread = socketio.start_background_task(thread_update_board)
 
 
 @socketio.on('connection_callback', namespace='/tetris')
@@ -58,20 +68,9 @@ def keypress(data):
 		pptetris.p1.trion.move_left()
 	elif data['key'] == "ArrowUp":
 		pptetris.p1.trion.rot()
-	
-	print "\n"
-	for row in pptetris.p1.trion.get_game_board().tolist():
-		print row
-	print "\n"
 
 	emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
-
-@app.route('/iterate') # Needs to emit to all clients on a thread per second
-def iterate():
-	pptetris.iterate()
-	if pptetris.p1.trion.game_over:
-		return 0
-	return pptetris.p1.trion.get_game_board().tolist()
+	
 
 if __name__ == '__main__':
 	if 'debug' in sys.argv:
