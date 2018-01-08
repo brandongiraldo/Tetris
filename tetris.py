@@ -5,7 +5,7 @@ import numpy as np
 class tetromino():
 
 	def __init__(self, color, structure):
-		self.structure = color * structure # np array
+		self.structure = structure # np array
 		self.color = color
 		x = np.random.randint(10 - np.shape(self.structure)[1])
 		self.loc = np.array([0, x]) # top left corner in playfield	
@@ -98,17 +98,22 @@ class tetrion():
 		x1 = self.curr_mino.get_bboxE()+1
 		y0 = self.curr_mino.get_bboxN()
 		y1 = self.curr_mino.get_bboxS()+1
-		position_to_test = self.playfield[y0:y1,x0:x1] > 1
-		curr_position = self.curr_mino.structure > 1
+		position_to_test = self.playfield[y0:y1,x0:x1] > 0
+		curr_position = self.curr_mino.structure > 0
 		return (position_to_test & curr_position).any()
 
 	def add_mino_to_field(self):
+		self.playfield = self.get_game_board()
+		self.create_new_mino()
+
+	def get_game_board(self):
+		display_board = np.array(self.playfield)
 		x0 = self.curr_mino.get_bboxW()
 		x1 = self.curr_mino.get_bboxE()+1
 		y0 = self.curr_mino.get_bboxN()
 		y1 = self.curr_mino.get_bboxS()+1
-		self.playfield[y0:y1,x0:x1] = self.curr_mino.structure
-		self.create_new_mino()
+		display_board[y0:y1,x0:x1] = self.curr_mino.color * self.curr_mino.structure
+		return display_board
 
 	def create_new_mino(self):
 		rand_mino_idx = np.random.randint(len(self.unique_minos))
@@ -121,7 +126,13 @@ class tetrion():
 		pass
 
 	def iterate(self):
-		if self.curr_mino.get_bboxS() == self.height:
+		# debug
+		print ""
+		print "iterate"
+		print ""
+		# debug
+
+		if self.curr_mino.get_bboxS()+1 == self.height:
 			self.add_mino_to_field()
 			return
 		self.curr_mino.move_down_by(1)
@@ -157,25 +168,7 @@ class tetrion():
 										[0, 1, 1]		]))
 		minos = []
 		for i in range(len(structures)):
-			minos.append( tetromino(i, structures[i]) )
+			minos.append( tetromino(i+1, structures[i]) )
 		return minos
-
-	def get_game_board(self):
-		display_board = np.zeros(np.shape(self.playfield))
-		x0 = self.curr_mino.get_bboxW()
-		x1 = self.curr_mino.get_bboxE()+1
-		y0 = self.curr_mino.get_bboxN()
-		y1 = self.curr_mino.get_bboxS()+1
-
-		temp = display_board[y0:y1,x0:x1]
-		print np.shape(self.curr_mino.structure)
-		print x0
-		print x1
-		print y0
-		print y1
-		print np.shape(temp)
-
-		display_board[y0:y1,x0:x1] = self.curr_mino.structure
-		return display_board
 
 

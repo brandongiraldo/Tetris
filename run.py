@@ -27,6 +27,8 @@ def thread_update_board():
     while True:
         socketio.sleep(1)
         pptetris.p1.trion.iterate()
+        # render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
+        print pptetris.p1.trion.get_game_board()
         if pptetris.p1.trion.game_over:
         	return 0
 		socketio.emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
