@@ -15,33 +15,45 @@ update_board_thread = None
 thread_lock = Lock()
 
 # create game
-pptetris = None
+pptetris = game.game()
 
 @app.route('/')
 def index():
 	# initialize game
-	global pptetris
-	pptetris = game.game()
+	
+	# global pptetris
+	# pptetris = game.game()
+
+	# store client ID hash
+
+	print "\n"
+	for row in pptetris.p1.trion.get_game_board().tolist():
+		print row
+	print "\n"
+
 	return render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist(), async_mode=socketio.async_mode)
 
 def thread_update_board():
     while True:
-        socketio.sleep(10)
-        # broken right now
-        pptetris.iterate()
+        socketio.sleep(0.5)
+        pptetris.p1.trion.iterate()
+        # render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
+
+        for row in pptetris.p1.trion.get_game_board():
+        	print row
+
         if pptetris.p1.trion.game_over:
         	return 0
 		emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
 
         
-
 @socketio.on('connect', namespace='/tetris')
 def connect():
 	global update_board_thread
 	with thread_lock:
 		if update_board_thread is None:
-			update_board_thread = socketio.start_background_task(thread_update_board)
 			emit('connection_successful', {'data': 'Now connected to tetris backend.'})
+			update_board_thread = socketio.start_background_task(thread_update_board)
 
 
 @socketio.on('connection_callback', namespace='/tetris')

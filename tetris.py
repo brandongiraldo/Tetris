@@ -90,7 +90,7 @@ class tetrion():
 
 	def rot(self):
 		self.curr_mino.rotcw()
-		if self.mino_collides():
+		if self.curr_mino.get_bboxE() >= self.width or self.mino_collides():
 			self.curr_mino.rotccw()
 
 	def mino_collides(self):
@@ -121,6 +121,11 @@ class tetrion():
 		pass
 
 	def iterate(self):
+
+		print ""
+		print "iterate"
+		print ""
+
 		if self.curr_mino.get_bboxS() == self.height:
 			self.add_mino_to_field()
 			return
@@ -133,9 +138,10 @@ class tetrion():
 			self.add_mino_to_field()
 			return
 		row_filled = [(row>0).all() for row in self.playfield]
-		unfilled_rows = self.playfield[not row_filled]
-		new_playfield = np.zeros(np.shape(self.playfield))
-		new_playfield[(self.height-np.shape(unfilled_rows)[0]):] = unfilled_rows
+		if any(row_filled):
+			unfilled_rows = self.playfield[not row_filled]
+			new_playfield = np.zeros(np.shape(self.playfield))
+			new_playfield[(self.height-np.shape(unfilled_rows)[0]):] = unfilled_rows
 
 
 	def define_tetrominoes(self):
@@ -165,6 +171,15 @@ class tetrion():
 		x1 = self.curr_mino.get_bboxE()+1
 		y0 = self.curr_mino.get_bboxN()
 		y1 = self.curr_mino.get_bboxS()+1
+
+		temp = display_board[y0:y1,x0:x1]
+		print np.shape(self.curr_mino.structure)
+		print x0
+		print x1
+		print y0
+		print y1
+		print np.shape(temp)
+
 		display_board[y0:y1,x0:x1] = self.curr_mino.structure
 		return display_board
 
