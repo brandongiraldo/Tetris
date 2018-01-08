@@ -50,13 +50,14 @@ def connection_callback(message):
 
 @socketio.on('keypress', namespace='/tetris')
 def keypress(data):
-	if data['key'] == 'ArrowRight':
+	if data['key'] == "ArrowRight":
 		pptetris.p1.trion.move_right()
 	elif data['key'] == "ArrowLeft":
 		pptetris.p1.trion.move_left()
 	elif data['key'] == "ArrowUp":
 		pptetris.p1.trion.rot()
 
+	render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
 	emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
 	
 

@@ -10,10 +10,6 @@
     <h1>Tetris</h1>
     <p id="connected"></p>
     <p>Async mode is: <b>{{ async_mode }}</b></p>
-    <ul id="board">
-    	{% for row in board %}
-    		<li>{{row}}</li>
-    	{% endfor %}
-    </ul>
+    {% include 'board.html' %}
 </body>
 </html>

@@ -16,12 +16,8 @@ $(document).ready(function() {
     });
 
     socket.on('update_board', function(data) {
-    	$("#board").empty();
     	data.board.forEach(function(row){
     		console.log(row);
-    		var line = document.createElement("li");
-    		line.innerHTML = row
-    		$('#board').append(line); 
     	});
     });
 
