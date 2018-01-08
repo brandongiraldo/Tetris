@@ -62,6 +62,7 @@ class tetrion():
 		# do a matrix addition to include it
 
 	def move_right(self):
+		print "xxxxxxxxxxxxxxxxxxxxxxxxx hello world"
 		if self.curr_mino.get_bboxE() + 1 < self.width:		
 			self.curr_mino.move_right()
 		if self.mino_collides():
@@ -90,7 +91,7 @@ class tetrion():
 
 	def rot(self):
 		self.curr_mino.rotcw()
-		if self.mino_collides():
+		if self.curr_mino.get_bboxE() >= self.width or self.mino_collides():
 			self.curr_mino.rotccw()
 
 	def mino_collides(self):

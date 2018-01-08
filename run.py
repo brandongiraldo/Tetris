@@ -22,7 +22,12 @@ def index():
 	global pptetris
 	pptetris = game.game()
 	# store client ID hash
-	print type(pptetris)
+
+	print "\n"
+	for row in pptetris.p1.trion.get_game_board().tolist():
+		print row
+	print "\n"
+
 	return render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist(), async_mode=socketio.async_mode)
 
 def background_thread():
@@ -47,11 +52,11 @@ def connection_callback(message):
 
 @socketio.on('keypress', namespace='/tetris')
 def keypress(data):
-	if data['key'] is "ArrowRight":
+	if data['key'] == "ArrowRight":
 		pptetris.p1.trion.move_right()
-	elif data['key'] is "ArrowLeft":
+	elif data['key'] == "ArrowLeft":
 		pptetris.p1.trion.move_left()
-	elif data['key'] is "ArrowUp":
+	elif data['key'] == "ArrowUp":
 		pptetris.p1.trion.rot()
 	
 	print "\n"
