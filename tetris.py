@@ -121,11 +121,6 @@ class tetrion():
 		pass
 
 	def iterate(self):
-
-		print ""
-		print "iterate"
-		print ""
-
 		if self.curr_mino.get_bboxS() == self.height:
 			self.add_mino_to_field()
 			return

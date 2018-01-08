@@ -1,9 +1,6 @@
 $(document).ready(function() {
-    namespace = '/tetris';
-    // Connect to the Socket.IO server.
-    // The connection URL has the following format:
-    //     http[s]://<domain>:<port>[/<namespace>]
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+    var socket = io.connect("http://localhost:" + location.port);
     
     socket.on('connect', function() { 
     	socket.emit('connection_callback', {data: 'connected!'});
