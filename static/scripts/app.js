@@ -10,7 +10,7 @@
  *
  */
 angular
-  .module('tetrisApp', [])
+  .module('tetrisApp', ['ngRoute', 'btford.socket-io'])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
@@ -20,5 +20,8 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-      $locationProvider.html5Mode(true);
+      $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+      });
 });
