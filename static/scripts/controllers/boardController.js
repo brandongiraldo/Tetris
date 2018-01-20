@@ -1,7 +1,28 @@
-$(document).ready(function() {
+// $(document).ready(function() {
 
-    var socket = io.connect("http://localhost:" + location.port);
-    
+//     var socket = io.connect("http://localhost:" + location.port);
+
+//     $(document).keydown(function(e) {
+//     	switch (event.key) {
+// 		    case "ArrowDown":
+// 		    case "ArrowUp":
+// 		    case "ArrowLeft":
+// 		    case "ArrowRight":
+// 		    socket.emit("keypress", {key: event.key});
+// 		    break;
+// 	    	default:
+// 			return;
+// 		}
+// 	});
+// });
+
+'use strict';
+
+angular.module('tetrisApp')
+  .controller('boardController', ['$scope', 'socket', function($scope, socket) {
+
+    console.log("made it!");
+
     socket.on('connect', function() { 
     	socket.emit('connection_callback', {data: 'connected!'});
     });
@@ -22,17 +43,4 @@ $(document).ready(function() {
     	socket.emit('connection_callback', {data: 'connected!'});
     	console.log(key)
     });
-
-    $(document).keydown(function(e) {
-    	switch (event.key) {
-		    case "ArrowDown":
-		    case "ArrowUp":
-		    case "ArrowLeft":
-		    case "ArrowRight":
-		    socket.emit("keypress", {key: event.key});
-		    break;
-	    	default:
-			return;
-		}
-	});
-});
+}]);

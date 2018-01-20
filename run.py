@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from threading import Lock
-from flask import Flask, render_template
+from flask import Flask, render_template, make_response
 from flask_socketio import SocketIO, emit
 import sys
 import game
@@ -21,7 +21,7 @@ pptetris = game.game()
 
 @app.route('/')
 def index():
-	return render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist(), async_mode=socketio.async_mode)
+	return make_response(open('templates/index.html').read())
 
 def thread_update_board():
     while True:
@@ -30,8 +30,9 @@ def thread_update_board():
         # render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
         print pptetris.p1.trion.get_game_board()
         if pptetris.p1.trion.game_over:
-        	return 0
-		socketio.emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
+        	print "ok"
+        print "ping to all clients!"
+        socketio.emit('update_board', {'board': pptetris.p1.trion.get_game_board().tolist()})
 
         
 @socketio.on('connect')

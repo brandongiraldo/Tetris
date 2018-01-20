@@ -2,11 +2,12 @@ import numpy as np
 
 # http://tetris.wikia.com/wiki/Gameplay_overview
 
+# Represents the individual pieces in tetris
 class tetromino():
 
 	def __init__(self, color, structure):
 		self.structure = structure # np array
-		self.color = color
+		self.color = color # int, handled by client to render
 		x = np.random.randint(10 - np.shape(self.structure)[1])
 		self.loc = np.array([0, x]) # top left corner in playfield	
 
@@ -23,10 +24,10 @@ class tetromino():
 	def move_left(self):
 		self.loc[1] -= 1
 
-	def rotcw(self):
+	def rotate_clockwise(self):
 		self.structure = np.rot90(self.structure, 3)
 
-	def rotccw(self):
+	def rotate_counter_clockwise(self):
 		self.structure = np.rot90(self.structure)
 
 	def get_bboxN(self):
@@ -46,6 +47,7 @@ class tetromino():
 		self.loc = np.array([0, x]) # top left corner in playfield
 		self.structure = np.rot90(self.structure, np.random.randint(4))
 
+# The board that holds game state
 class tetrion():
 
 	def __init__(self):
@@ -89,9 +91,9 @@ class tetrion():
 		self.curr_mino.move_down_by(delta)
 
 	def rot(self):
-		self.curr_mino.rotcw()
+		self.curr_mino.rotate_clockwise()
 		if self.curr_mino.get_bboxE() >= self.width or self.mino_collides():
-			self.curr_mino.rotccw()
+			self.curr_mino.rotate_counter_clockwise()
 
 	def mino_collides(self):
 		x0 = self.curr_mino.get_bboxW()
@@ -167,8 +169,8 @@ class tetrion():
 		structures.append(np.array([	[1, 1, 0]		,\
 										[0, 1, 1]		]))
 		minos = []
-		for i in range(len(structures)):
-			minos.append( tetromino(i+1, structures[i]) )
+		for index, item in enumerate(structures):
+			minos.append(tetromino(index+1, item))
 		return minos
 
 
