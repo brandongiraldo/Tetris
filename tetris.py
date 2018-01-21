@@ -92,16 +92,12 @@ class tetrion():
 	def rot(self):
 		self.curr_mino.rotate_clockwise()
 		if self.curr_mino.get_bboxE() >= self.width or self.mino_collides():
-<<<<<<< HEAD
-			self.curr_mino.rotccw()
+			self.curr_mino.rotate_counter_clockwise()
 		sze = np.shape(self.curr_mino.structure)
 		if sze[0] == 1:
 			self.move_left()
 		if sze[1] == 1:
 			self.move_right()
-=======
-			self.curr_mino.rotate_counter_clockwise()
->>>>>>> c712dc7538a6c60ab07bd0c0c851b5db33e0636b
 
 	def mino_collides(self):
 		x0 = self.curr_mino.get_bboxW()
