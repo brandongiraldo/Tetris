@@ -21,7 +21,7 @@ class player():
 class game():
 
 	def __init__(self):
-		self.update_time = 140 # ms
+		self.update_time = 0.5 # seconds
 		self.p1 = player()
 		# self.p2 = player()
 
