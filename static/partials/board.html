@@ -1,4 +1,4 @@
-<ul id="board" ng-controller="boardController">
+<ul id="board" ng-controller="boardController" ng-keydown="key($event)">
 	<p>Heres a board!</p>
 	<ul ng-repeat="row in board">
 		<li>{{row}}</li>
