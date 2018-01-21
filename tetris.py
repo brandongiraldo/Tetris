@@ -52,8 +52,7 @@ class tetrion():
 		self.height = 20 # standard size, use global var?
 		self.width = 10 # this is also used in tetromino class
 		self.unique_minos = self.define_tetrominoes()
-		self.curr_mino = None
-		self.create_new_mino()
+		self.curr_mino = self.create_new_mino()
 		self.save_mino = None
 		self.playfield = np.zeros((self.height, self.width))
 		self.game_over = False
@@ -92,6 +91,11 @@ class tetrion():
 		self.curr_mino.rotcw()
 		if self.curr_mino.get_bboxE() >= self.width or self.mino_collides():
 			self.curr_mino.rotccw()
+		sze = np.shape(self.curr_mino.structure)
+		if sze[0] == 1:
+			self.move_left()
+		if sze[1] == 1:
+			self.move_right()
 
 	def mino_collides(self):
 		x0 = self.curr_mino.get_bboxW()
@@ -107,12 +111,13 @@ class tetrion():
 		self.create_new_mino()
 
 	def get_game_board(self):
-		display_board = np.array(self.playfield)
+		display_board = np.zeros(np.shape(self.playfield))
 		x0 = self.curr_mino.get_bboxW()
 		x1 = self.curr_mino.get_bboxE()+1
 		y0 = self.curr_mino.get_bboxN()
 		y1 = self.curr_mino.get_bboxS()+1
 		display_board[y0:y1,x0:x1] = self.curr_mino.color * self.curr_mino.structure
+		display_board = display_board + self.playfield
 		return display_board
 
 	def create_new_mino(self):

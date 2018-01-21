@@ -20,22 +20,14 @@ pptetris = game.game()
 @app.route('/')
 def index():
 	# initialize game
-	
-	# global pptetris
-	# pptetris = game.game()
 
 	# store client ID hash
-
-	print "\n"
-	for row in pptetris.p1.trion.get_game_board().tolist():
-		print row
-	print "\n"
 
 	return render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist(), async_mode=socketio.async_mode)
 
 def thread_update_board():
     while True:
-        socketio.sleep(0.5)
+        socketio.sleep(pptetris.update_time)
         pptetris.p1.trion.iterate()
         # render_template('index.html', board=pptetris.p1.trion.get_game_board().tolist())
 
