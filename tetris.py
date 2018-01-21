@@ -55,6 +55,7 @@ class tetrion():
 		self.width = 10 # this is also used in tetromino class
 		self.unique_minos = self.define_tetrominoes()
 		self.curr_mino = self.create_new_mino()
+		print self.curr_mino
 		self.save_mino = None
 		self.playfield = np.zeros((self.height, self.width))
 		self.game_over = False
@@ -86,7 +87,7 @@ class tetrion():
 		curr_cols = self.playfield[:,x0:(x1+1)]
 		row_has_block = [(row>0).any() for row in curr_cols]
 		first_block_y = argmax(row_has_block)
-		delta = first_block_y - self.curr_mino.get_bboxS - 1
+		delta = first_block_y - self.curr_mino.get_bboxS() - 1
 		self.curr_mino.move_down_by(delta)
 
 	def rot(self):
@@ -110,7 +111,7 @@ class tetrion():
 
 	def add_mino_to_field(self):
 		self.playfield = self.get_game_board()
-		self.create_new_mino()
+		self.curr_mino = self.create_new_mino()
 
 	def get_game_board(self):
 		display_board = np.zeros(np.shape(self.playfield))
@@ -127,9 +128,10 @@ class tetrion():
 
 	def create_new_mino(self):
 		rand_mino_idx = np.random.randint(len(self.unique_minos))
-		self.curr_mino = self.unique_minos[rand_mino_idx]
-		new_mino = tetromino(self.curr_mino.color, self.curr_mino.structure)
+		new_curr_mino = self.unique_minos[rand_mino_idx]
+		new_mino = tetromino(new_curr_mino.color, new_curr_mino.structure)
 		self.unique_minos[rand_mino_idx] = new_mino
+		return new_curr_mino
 
 	def add_row_to_bot(self):
 		# push up the current tetromino if collision occurs

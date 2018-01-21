@@ -1,15 +1,3 @@
-//     $(document).keydown(function(e) {
-//     	switch (event.key) {
-// 		    case "ArrowDown":
-// 		    case "ArrowUp":
-// 		    case "ArrowLeft":
-// 		    case "ArrowRight":
-// 		    socket.emit("keypress", {key: event.key});
-// 		    break;
-// 	    	default:
-// 			return;
-// 		}
-
 'use strict';
 
 angular.module('tetrisApp')
