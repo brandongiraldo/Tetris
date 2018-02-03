@@ -121,10 +121,7 @@ class tetrion():
 		y1 = self.curr_mino.get_bboxS()+1
 		display_board[y0:y1,x0:x1] = self.curr_mino.color * self.curr_mino.structure
 		display_board = display_board + self.playfield
-		board = []
-		for row in display_board:
-			board.append({'row': row.tolist()})
-		return board
+		return display_board
 
 	def create_new_mino(self):
 		rand_mino_idx = np.random.randint(len(self.unique_minos))

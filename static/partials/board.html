@@ -1,6 +1,11 @@
 <ul id="board" ng-controller="boardController" ng-keydown="key($event)">
 	<p>Heres a board!</p>
-	<ul ng-repeat="row in board">
-		<li>{{row}}</li>
+	<ul ng-repeat="row in board" ng-init="parentIndex = $index">
+		{{row}}
+		{{parentIndex}}
+		{{$index}}
+		<li ng-repeat="cell in JSON.parse(row)">
+			test
+		</li>
 	</ul>
 </ul>

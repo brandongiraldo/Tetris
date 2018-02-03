@@ -24,9 +24,12 @@ angular.module('tetrisApp')
     });
 
     socket.on('update_board', function(data) {
-        console.log(data);
+        console.log(JSON.parse(data));
+        JSON.parse(data).forEach(function(item) {
+            console.log(item);
+        });
 		$scope.$applyAsync(function(){
-			$scope.board = data;
+			$scope.board = JSON.parse(data);
 		});
     });
 

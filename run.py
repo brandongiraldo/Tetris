@@ -6,6 +6,7 @@ from flask_socketio import SocketIO, emit
 import sys
 import game
 import numpy
+import json
 
 async_mode = None
 
@@ -27,11 +28,11 @@ def thread_update_board():
     while True:
         socketio.sleep(1)
         pptetris.p1.trion.iterate()
-        if pptetris.p1.trion.game_over:
-        	socketio.emit('game_over')
-        else:
-        	print pptetris.p1.trion.get_game_board()
-        	socketio.emit('update_board', pptetris.p1.trion.get_game_board())
+        # if pptetris.p1.trion.game_over:
+        # 	socketio.emit('game_over')
+        # else:
+        print json.dumps(pptetris.p1.trion.get_game_board().tolist())
+        socketio.emit('update_board', json.dumps(pptetris.p1.trion.get_game_board().tolist()))
 
         
 @socketio.on('connect')
