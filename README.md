@@ -2,6 +2,8 @@
 
 An implementation of Puyo Puyo Tetris for the web.
 
+*Project is broken at the moment, migrating from angular to react...*
+
 # Setup
 
 *Using Python 2.7*
